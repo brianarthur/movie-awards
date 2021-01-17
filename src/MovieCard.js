@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { addNomination, removeNomination } from './store/actions';
+
 import clsx from 'clsx';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -36,6 +39,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -76,8 +80,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const MovieCard = ({ movie, movieDetails, expanded, handleExpandCard }) => {
+const movieDetailFields = ["Title", "Rated", "Released", "Genre", "Runtime", "Director", "Writer", "Actors", "Plot"];
+
+const MovieCard = ({ movie, movieDetails, nominated, addNomination, removeNomination, expanded, handleExpandCard }) => {
     const classes = useStyles();
+
+    const handleNominate = nominated ? ((n) => removeNomination(n)) : ((n) => addNomination(n));
 
     if (!movie) return null;
 
@@ -93,8 +101,8 @@ const MovieCard = ({ movie, movieDetails, expanded, handleExpandCard }) => {
                     action={
                         <>
                             <Tooltip title="Nominate" placement="top">
-                                <IconButton aria-label="nominate">
-                                    <AddIcon />
+                                <IconButton onClick={() => handleNominate(movie)} aria-label="nominate">
+                                    {nominated ? <RemoveIcon /> : <AddIcon />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title={expanded ? "Hide details" : "Show details"} placement="top">
@@ -128,42 +136,12 @@ const MovieCard = ({ movie, movieDetails, expanded, handleExpandCard }) => {
                     <TableContainer component={Paper}>
                         <Table aria-label="movie details">
                             <TableBody>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Title</TableCell>
-                                    <TableCell>{movieDetails.Title}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Rated</TableCell>
-                                    <TableCell>{movieDetails.Rated}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Release Date</TableCell>
-                                    <TableCell>{movieDetails.Released}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Genre</TableCell>
-                                    <TableCell>{movieDetails.Genre}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Runtime</TableCell>
-                                    <TableCell>{movieDetails.Runtime}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Director</TableCell>
-                                    <TableCell>{movieDetails.Director}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Writer</TableCell>
-                                    <TableCell>{movieDetails.Writer}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Actors</TableCell>
-                                    <TableCell>{movieDetails.Actors}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row" align="right">Plot</TableCell>
-                                    <TableCell>{movieDetails.Plot}</TableCell>
-                                </TableRow>
+                                {movieDetailFields.map((field => (
+                                    <TableRow key={field}>
+                                        <TableCell component="th" scope="row" align="right">{field}</TableCell>
+                                        <TableCell>{movieDetails[field]}</TableCell>
+                                    </TableRow>
+                                )))}
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -173,4 +151,7 @@ const MovieCard = ({ movie, movieDetails, expanded, handleExpandCard }) => {
     );
 }
 
-export default MovieCard;
+
+const mapDispatchToProps = { addNomination, removeNomination };
+
+export default connect(null, mapDispatchToProps)(MovieCard);
