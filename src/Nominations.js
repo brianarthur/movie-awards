@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
@@ -25,8 +26,9 @@ const Nominations = ({ nominations }) => {
 
     return (
         <>
+            <hr />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>Nominations</div>
+                <Typography variant="h4">Nominations</Typography>
                 { nominations.length > 3 &&
                     <div>
                         <IconButton onClick={backClick}><ChevronLeftIcon /></IconButton>
@@ -34,6 +36,9 @@ const Nominations = ({ nominations }) => {
                     </div>
                 }
             </div>
+            {nominations.length === 0 && 
+                <Typography variant="body">Currently no nominations. Start searching to get started.</Typography>
+            }
             <MovieList data={nominations} nominated={true} page={page} />
         </>
     );

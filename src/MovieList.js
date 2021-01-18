@@ -34,8 +34,6 @@ const MovieList = ({ data, addNomination, removeNomination, nominated = false, p
         }
     };
 
-    console.log(page * 3, page * 3 + 3);
-
     const pageData = data.slice(page * 3, page * 3 + 3);
     const gridFiller = [];
 

@@ -5,12 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { createStore, compose, applyMiddleware } from "redux";
-// import thunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reducer from "./store/reducers";
 
-// const store = createStore(cartReducer, compose(applyMiddleware(thunk)));
-const store = createStore(reducer);
+const store = createStore(reducer, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <React.StrictMode>
