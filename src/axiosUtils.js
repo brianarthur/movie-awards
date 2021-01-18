@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const apiKey = process.env.OMDB_API;
-const apiKey = "f05a3f0";
+const apiKey = process.env.OMDB_API;
 
 export const authAxios = axios.create();
 
