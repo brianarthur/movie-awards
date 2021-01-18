@@ -39,7 +39,7 @@ export const clearSearch = () => {
 export const search = search => {
 	return dispatch => {
 		dispatch(setSearchValue(search));
-		authAxios.get('http://www.omdbapi.com/', {
+		authAxios.get('https://www.omdbapi.com/', {
 			params: {
 				s: search
 			}
